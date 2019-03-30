@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 class ProfileModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, verbose_name="Название")
-    is_phys = models.BooleanField(default=True, verbose_name="Физическое лицо?", blank=True)
-    is_pathner = models.BooleanField(default=True, verbose_name="Партнер?", blank=True)
+    is_phys = models.BooleanField(default=False, verbose_name="Физическое лицо?", blank=True)
+    is_pathner = models.BooleanField(default=False, verbose_name="Партнер?", blank=True)
     is_volon = models.BooleanField(default=False, verbose_name="Волонтер?", blank=True)
     is_staff = models.BooleanField(default=False, verbose_name="Сотрудник", blank=True)
     is_owner = models.BooleanField(default=False, verbose_name="Организатор", blank=True)
@@ -25,6 +25,9 @@ class ProfileModel(models.Model):
     class Meta():
         verbose_name = "Профиль"
         verbose_name_plural = "Профили"
+        permissions = (
+            ('manage', 'Право на редактирование профиля ',),
+        )
 
 
 class EventModel(models.Model):
@@ -42,6 +45,9 @@ class EventModel(models.Model):
     class Meta():
         verbose_name = "Мероприятие"
         verbose_name_plural = "Мероприятия"
+        permissions = (
+            ('manage', 'Право на редактирование мероприятия ',),
+        )
 
 
 class TaskModel(models.Model):
@@ -52,7 +58,7 @@ class TaskModel(models.Model):
                                 blank=True, related_name="partner")
     event = models.ForeignKey(EventModel, on_delete=models.CASCADE, verbose_name="Мероприятие")
     deadline = models.DateTimeField(null=True, verbose_name="Deadline", blank=True)
-
+    status = models.CharField(max_length=100, verbose_name="Статус",default="не начат")
 
     def __str__(self):
         return self.name
@@ -60,3 +66,6 @@ class TaskModel(models.Model):
     class Meta():
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
+        permissions = (
+            ('manage', 'Право на редактирование задачи ',),
+        )

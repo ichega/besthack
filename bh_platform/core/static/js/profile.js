@@ -4,27 +4,26 @@ Vue.component('page-profile',{
       <v-layout row wrap justify-center>
         <v-flex md8 xs12>
           <v-card light>
-            <v-layout>
-              <v-flex xs5>
-                <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" aspect-ratio="1" contain style="padding-left:10px" ></v-img>
+            <v-layout row wrap>
+              <v-flex md6 xs12>
+                <v-img src="https://cdn.vuetifyjs.com/images/cards/foster.jpg" contain style="padding-left:10px" ></v-img>
               </v-flex>
 
-              <v-flex xs9>
+              <v-flex md6 xs12>
                 <v-card-title primary-title>
-                  <div>
+                  <v-flex class="text-wrap" style=" word-wrap: break-word;" >
                     <h3>Пользователь: <span>{{who_is_profile}}</span> </h3>
-                    <h3>ФИО: <span>{{img_of_profile}}</span> </h3>
+                    <h3>ФИО: <span>sdfsdf</span> </h3>
                     <h3>Физическое лицо</h3>
-                    <h3>ИНН: 12312301238</h3>
+                    <h3>ИНН: 123123012381</h3>
                     <h3>Веб-сайт: <a href="#" style="text-decoration: none">что-то.ру</a></h3>
                     <h3>Краткое описание: такой то такой то</h3>
                     <h3>E-mail: lol@gmail.com</h3>
                     <h3>Телефон: +79201218940</h3>
-                  </div>
+                  </v-flex>
                 </v-card-title>
               </v-flex>
             </v-layout>
-            <v-divider light></v-divider>
           </v-card>
         </v-flex>
       </v-layout>

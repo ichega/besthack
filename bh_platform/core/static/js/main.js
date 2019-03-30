@@ -1,4 +1,4 @@
-const Home = { template: '<h1>Домашнаяя страница</h1>' }
+const Home = { template: '<edit-button caption="Kek"></edit-button>' }
 const Profile = { template: '<page-profile></page-profile>' }
 const Events = { template: '<page-events></page-events>'}
 const Event = { template: '<page-innerevent></page-innerevent>'}
@@ -31,9 +31,13 @@ var router = new VueRouter({
 const app = new Vue({
     el: "#app",
     router,
+    data: () => ({
+        drawer: false
+      }),
     methods: {
         change_location: function(path){
             location.pathname = path
         },
+        
     },
 })

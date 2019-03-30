@@ -26,8 +26,8 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
-def post_event(request):
-    request.
+# def post_event(request):
+#     request.
 
 
 

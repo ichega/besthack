@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Menu</title>
+    <link href="{% static 'css/material_fonts.css' %}" rel="stylesheet">
+    <link href="{% static 'css/vuetify.min.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="{% static 'css/all.css' %}" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  </head>
+  <body>
+
+  <div id="app"></div>
+
+    </body>
+    <!-- Start - Подключение скриптов (библиотека VueTify и Script) --->
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src="{% static 'js/vue.js' %}"></script>
+    <script src="{% static 'js/vuetify.js' %}"></script>
+    <script src="{% static 'js/vuex.js' %}"></script>
+
+
+
+
+
+    
+
+    {% if user.is_authenticated %}
+    <script>
+<!--      store.commit("set_manage", true);-->
+    </script>
+    {% endif %}
+    
+  </html>

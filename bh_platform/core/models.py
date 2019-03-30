@@ -18,14 +18,14 @@ class EventModel(models.Model):
         verbose_name_plural = "Мероприятия"
 
 class PartnerModel(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Название")
+    name = models.CharField(max_length=100, verbose_name="Название", blank=True)
     fl = models.BooleanField(default=True,verbose_name="Физическое лицо?")
-    inn = models.CharField(max_length=100, verbose_name="ИНН")
-    site = models.CharField(max_length=100, verbose_name="Веб-сайт")
-    description = models.CharField(max_length=100, verbose_name="Краткое описание")
-    phone = models.CharField(max_length=100, verbose_name="Телефон")
-    email = models.CharField(max_length=100, verbose_name="Email")
-    image = models.ImageField(null=True, verbose_name="Картинка")
+    inn = models.CharField(max_length=100, verbose_name="ИНН", null=True, blank=True)
+    site = models.CharField(max_length=100, verbose_name="Веб-сайт", null=True, blank=True)
+    description = models.CharField(max_length=100, verbose_name="Краткое описание", null=True, blank=True)
+    phone = models.CharField(max_length=100, verbose_name="Телефон", null=True, blank=True)
+    email = models.CharField(max_length=100, verbose_name="Email", null=True, blank=True)
+    image = models.ImageField(null=True, verbose_name="Картинка", blank=True)
 
     def __str__(self):
         return self.name

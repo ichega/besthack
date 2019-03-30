@@ -123,7 +123,7 @@ USE_TZ = True
 
 ROOT_DIR = os.path.join("..", BASE_DIR)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join("..", "static", BASE_DIR)
+STATIC_ROOT = os.path.join(ROOT_DIR, "static")
 
 CKEDITOR_CONFIGS = {
     'awesome_ckeditor': {

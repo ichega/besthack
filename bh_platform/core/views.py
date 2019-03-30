@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+=======
+from django.shortcuts import render, HttpResponse
+>>>>>>> 90ca2c92210e0a69331ea457247184591d90b7aa
 
 # Create your views here.
 
@@ -10,4 +14,7 @@ def get_events(request):
 
 def index_view(request):
     print("Hello")
-    return render("index.html")
+    context = {
+
+    }
+    return HttpResponse(render(request, "index.html", context))

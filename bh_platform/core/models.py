@@ -49,7 +49,7 @@ class TaskModel(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название")
     description = RichTextField(config_name='awesome_ckeditor', null=True, blank=True)
     partner = models.ForeignKey(ProfileModel, on_delete=models.DO_NOTHING, verbose_name="Партнер", null=True,
-                                blank=True, related_name="pathner")
+                                blank=True, related_name="partner")
     event = models.ForeignKey(EventModel, on_delete=models.CASCADE, verbose_name="Мероприятие")
     deadline = models.DateTimeField(null=True, verbose_name="Deadline", blank=True)
 

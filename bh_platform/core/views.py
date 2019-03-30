@@ -25,31 +25,86 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-#
+
+def post_event(request):
+    request.
+
+
+
 def sign_up(request):
     data = request.body.decode()
     data = json.loads(data)
     if "user_type" in data:
+
+        user = User.objects.create(username=data['username'])
+        print(data["password"])
+        user.set_password(data["password"])
+        user.save()
+
+        image = data["image"].split(',')[1]
+        image_64_decode = base64.b64decode(image)
+        media_root = settings.MEDIA_ROOT
+        filename = str(uuid.uuid4()) + str("_") + str(data["image_name"])
+        path = os.path.join(media_root, filename)
+        print(path)
+        file = open(path, 'wb')
+        file.write(image_64_decode)
+
         if data["user_type"]=="manager":
-            user = User.objects.create(username=data['username'])
-            image = data["image"].split(',')[1]
-            image_64_decode = base64.b64decode(image)
-            media_root = settings.MEDIA_ROOT
-            filename = str(uuid.uuid4()) + str("_") + str(data["image_name"])
-            path = os.path.join(media_root, filename)
-            print(path)
-            file = open(path, 'wb')
-            file.write(image_64_decode)
             profile = ProfileModel(user=user, name=data['username'], email=data['email'], phone=data["phone"], image=str(filename),
                                    description=data['short_description'],is_owner=True)
             profile.save()
             assign_perm("manage", user, profile)
+            data["image"] = str(profile.image)
             data["id"] = profile.pk
             return JsonResponse(data)
-        #elif data["user_type"]=="volonteur":
+        elif data["user_type"]=="volunteur":
+            profile = ProfileModel(user=user, name=data['username'], email=data['email'], phone=data["phone"],
+                                   image=str(filename),
+                                   description=data['short_description'], is_volon=True)
+            profile.save()
+            assign_perm("manage", user, profile)
+            data["image"] = str(profile.image)
+            data["id"] = profile.pk
+            return JsonResponse(data)
+
+        elif data["user_type"]=="staff":
+            profile = ProfileModel(user=user, name=data['username'], email=data['email'], phone=data["phone"],
+                                   image=str(filename),
+                                   description=data['short_description'], is_staff=True)
+            profile.save()
+            assign_perm("manage", user, profile)
+            data["image"] = str(profile.image)
+            data["id"] = profile.pk
+            return JsonResponse(data)
+
+
+        elif data["user_type"]=="phys":
+            profile = ProfileModel(user=user, name=data['username'], email=data['email'], phone=data["phone"],
+                                   image=str(filename),
+                                   description=data['short_description'],is_partner=True, is_phys=True)
+            profile.save()
+            assign_perm("manage", user, profile)
+            data["image"] = str(profile.image)
+            data["id"] = profile.pk
+            return JsonResponse(data)
+
+        elif data["user_type"]=="ur":
+            profile = ProfileModel(user=user, name=data['username'], inn=data['inn'], site=data["site_url"],
+                                   image=str(filename),
+                                   description=data['short_description'], is_partner=True, is_phys=False)
+            profile.save()
+            assign_perm("manage", user, profile)
+            data["image"] = str(profile.image)
+            data["id"] = profile.pk
+            return JsonResponse(data)
 
 
 
+# def sign_in(request):
+#     data = request.body.decode()
+#     data = json.loads(data)
+#     user = User.objects.get(username=data["username"])
 
 
 

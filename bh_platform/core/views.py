@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 # Create your views here.
 
 
 def index_view(request):
     print("Hello")
-    return render("index.html")
+    context = {
+
+    }
+    return HttpResponse(render(request, "index.html", context))

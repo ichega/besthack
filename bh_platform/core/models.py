@@ -18,7 +18,7 @@ class EventModel(models.Model):
         verbose_name_plural = "Мероприятия"
 
 class PartnerModel(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Название", blank=True)
+    name = models.CharField(max_length=100, verbose_name="Название")
     fl = models.BooleanField(default=True,verbose_name="Физическое лицо?")
     inn = models.CharField(max_length=100, verbose_name="ИНН", null=True, blank=True)
     site = models.CharField(max_length=100, verbose_name="Веб-сайт", null=True, blank=True)

@@ -5,39 +5,73 @@
     <meta charset="utf-8">
     <title>Menu</title>
     <link href="{% static 'css/material_fonts.css' %}" rel="stylesheet">
-  
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <link rel="stylesheet" href="{% static 'css/all.css' %}"
           integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-          <link href="{% static 'css/vuetify.min.css' %}" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="{% static 'css/vuetify.min.css' %}" rel="stylesheet">
+
 </head>
 <body>
 
-    <div id="app">
-        <v-app>
-            <v-content>
-                <v-container>
-                    <v-btn color="success" @click="$router.push('/foo');">Перейти к Foo</v-btn>
-                    <v-btn color="success" @click="$router.push('/bar');">Перейти к Bar</v-btn>
-                    <hr>
-                    <router-view></router-view>
+<div id="app">
+    <v-app id="inspire">
 
-                </v-container>
-                
-            </v-content>
-        </v-app>
+        <!-- START - TOOLBAR(header) -->
+        <v-toolbar app fixed clipped-left light>
 
-            <!-- используем компонент router-link для навигации -->
-            <!-- входной параметр `to` определяет URL для перехода -->
-            <!-- `<router-link>` по умолчанию отображается тегом `<a>` -->
-            <!--        <router-link to="/foo">Перейти к Foo</router-link>-->
-            <!--        <router-link to="/bar">Перейти к Bar</router-link>-->
-            
-        <!-- отображаем тут компонент, для которого совпадает маршрут -->
-       
+            <v-layout row wrap>
+                <v-layout row wrap>
+                    <v-flex md1 xs1 align-self-center>
+                        <v-btn flat fab small @click="$router.push('/home')">
+                            <v-icon small>fa-home</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex md2 xs2 align-self-center>
+                            
+                            <v-btn small @click="$router.push('/events')">
+                                Мероприятия
+                            </v-btn>
+                            
+                        </v-flex>
+                    <v-flex md8 xs8 align-self-center >
+                        <div style="display: flex; justify-content: center;">
+                            <v-btn   small @click="$router.push('/canban')">
+                                Canban
+                            </v-btn>
+                        </div>
+                    </v-flex>
 
-    </div>
+                    <v-flex md1 xs1 align-self-center>
+                        <div style="display: flex; justify-content: center;">
+                            <v-btn small flat fab @click="$router.push('/profile')">
+                                <v-icon>fa-user-circle</v-icon>
+                            </v-btn>
+                        </div>
+                    </v-flex>
+                </v-layout>
+            </v-layout>
+        </v-toolbar>
+        <!-- END - TOOLBAR(header) -->
+
+        <!--CONTENT-->
+        <v-content style='background-color:rgba(0,0,0,0.1)'>   
+
+            <router-view></router-view>    
+             
+        </v-content>
+        <!--END-CONTENT-->
+
+
+        <v-footer app fixed light>
+            <span style="margin-left:20px">&copy; 2017</span>
+            <v-spacer></v-spacer>
+            <v-btn flat @click="$root.change_location('/admin')" :self=this>Войти в админ панель</v-btn>
+        </v-footer>
+    </v-app>
+</div>
+
 
 </body>
 <!-- Start - Подключение скриптов (библиотека VueTify и Script) --->
@@ -46,12 +80,18 @@
 <script src="{% static 'js/vuetify.js' %}"></script>
 <script src="{% static 'js/vuex.js' %}"></script>
 <script src="{% static 'js/vue-router.js' %}"></script>
+<script src="{% static 'js/canban.js' %}"></script>
+<script src="{% static 'js/events-script.js' %}"></script>
+<script src="{% static 'js/inner-event.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+
 
 
 {% if user.is_authenticated %}
 <script>
 // <!--      store.commit("set_manage", true);-->
+
 
 
 

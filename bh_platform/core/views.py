@@ -19,7 +19,21 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 
 
+
+
+
+
+
 # Create your views here.
+
+
+def get_events(request):
+    data = request.body.decode()
+    data = json.loads(data)
+    page = data["page"]
+
+
+
 
 @csrf_exempt
 def post_event(request):

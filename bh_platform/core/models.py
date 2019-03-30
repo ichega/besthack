@@ -1,12 +1,15 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
 class EventModel(models.Model):
-    name = models.CharField(max_length=100, verbose_name="название")
-    dt_start = models.DateTimeField(null=True)
-    dt_finish = models.DateTimeField(null=True)
-    image = models.ImageField(null=True, verbose_name="картинка")
+    name = models.CharField(max_length=100, verbose_name="Название")
+    description = RichTextField(config_name='awesome_ckeditor', null=True)
+    dt_start = models.DateTimeField(null=True, verbose_name="Начало")
+
+    dt_finish = models.DateTimeField(null=True, verbose_name="Конец")
+    image = models.ImageField(null=True, verbose_name="Картинка")
 
     def __str__(self):
         return self.name
@@ -15,14 +18,14 @@ class EventModel(models.Model):
         verbose_name_plural = "Мероприятия"
 
 class PartnerModel(models.Model):
-    name = models.CharField(max_length=100, verbose_name="название")
-    fl = models.BooleanField(default=True,verbose_name="физическое лицо?")
-    inn = models.CharField(max_length=100, verbose_name="инн")
-    site = models.CharField(max_length=100, verbose_name="веб-сайт")
-    description = models.CharField(max_length=100, verbose_name="краткое описание")
-    phone = models.CharField(max_length=100, verbose_name="телефон")
+    name = models.CharField(max_length=100, verbose_name="Название")
+    fl = models.BooleanField(default=True,verbose_name="Физическое лицо?")
+    inn = models.CharField(max_length=100, verbose_name="ИНН")
+    site = models.CharField(max_length=100, verbose_name="Веб-сайт")
+    description = models.CharField(max_length=100, verbose_name="Краткое описание")
+    phone = models.CharField(max_length=100, verbose_name="Телефон")
     email = models.CharField(max_length=100, verbose_name="Email")
-    image = models.ImageField(null=True, verbose_name="картинка")
+    image = models.ImageField(null=True, verbose_name="Картинка")
 
     def __str__(self):
         return self.name
@@ -34,12 +37,12 @@ class PartnerModel(models.Model):
 
 
 class TaskModel(models.Model):
-    name = models.CharField(max_length=100, verbose_name="название")
+    name = models.CharField(max_length=100, verbose_name="Казвание")
 
-    partner = models.ForeignKey(PartnerModel, on_delete=models.CASCADE, verbose_name="партнер", null=True)
-    event = models.ForeignKey(EventModel, on_delete=models.CASCADE, verbose_name="мероприятие", null=True)
-    dt = models.DateTimeField(null=True,verbose_name="крайний срок выполнения задания")
-    image = models.ImageField(null=True, verbose_name="картинка")
+    partner = models.ForeignKey(PartnerModel, on_delete=models.CASCADE, verbose_name="Картнер", null=True)
+    event = models.ForeignKey(EventModel, on_delete=models.CASCADE, verbose_name="Мероприятие", null=True)
+    dt = models.DateTimeField(null=True,verbose_name="Крайний срок выполнения задания")
+    image = models.ImageField(null=True, verbose_name="Картинка")
 
     def __str__(self):
         return self.name

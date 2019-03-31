@@ -17,6 +17,7 @@ from django.conf import settings
 import os
 import json
 from django.views.decorators.csrf import csrf_exempt
+from itertools import groupby
 
 
 
@@ -123,6 +124,21 @@ def get_tasks_as_perfomer(request):
         t["status"] = task.status
         response.append(t)
     return JsonResponse({"tasks":response})
+
+
+
+def get_partners(request):
+    data = request.body.decode()
+    data = json.loads(data)
+    tasks = list(TaskModel.get.filter(event=data["id"]))
+    response = []
+    for task in tasks:
+        if task.partner != None:
+            response.append(task.partner)
+    return JsonResponse({"partners":response})
+
+
+
 
 
 

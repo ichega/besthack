@@ -34,8 +34,8 @@ def get_events(request):
     page = data["page"]
     events = EventModel.objects.all()
     events = list(events)
-    print(events)
-    first = len(events) % int(page)
+    #print(events)
+    first = int(page)*10-10
     response = []
     for i in range(first,first+10,1):
         if i<len(events):

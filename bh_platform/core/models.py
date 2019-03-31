@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 class ProfileModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    otch = models.CharField(max_length=100, verbose_name="Отчество", null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name="Название")
     is_phys = models.BooleanField(default=False, verbose_name="Физическое лицо?", blank=True)
     #is_pathner = models.BooleanField(default=False, verbose_name="Партнер?", blank=True)
@@ -20,6 +21,7 @@ class ProfileModel(models.Model):
     email = models.CharField(max_length=100, verbose_name="Email", null=True, blank=True)
     image = models.ImageField(null=True, verbose_name="Картинка", blank=True)
 
+
     def __str__(self):
         return self.name
 
@@ -33,6 +35,7 @@ class ProfileModel(models.Model):
 
 class EventModel(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название")
+    snippet = RichTextField(config_name='awesome_ckeditor', null=True, blank=True)
     description = RichTextField(config_name='awesome_ckeditor', null=True, blank=True)
     dt_start = models.DateTimeField(null=True, verbose_name="Начало")
 

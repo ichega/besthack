@@ -27,11 +27,35 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
-#
-# def get_events(request):
-#     data = request.body.decode()
-#     data = json.loads(data)
-#     page = data["page"]
+
+def get_events(request):
+    data = request.body.decode()
+    data = json.loads(data)
+    page = data["page"]
+    events = EventModel.objects.all()
+    events = list(events)
+    #print(events)
+    first = int(page)*10-10
+    response = []
+    for i in range(first,first+10,1):
+        if i<len(events):
+            event = {}
+            e=events[i]
+            event["name"] = e.name
+            event["description"] = e.description
+            event["dt_start"] = str(e.dt_start)
+            event["dt_finish"] = str(e.dt_finish)
+            event["image"] = str(e.image)
+            event["owner"] = str(e.owner)
+            response.append(event)
+
+    return JsonResponse({"events":response})
+
+
+
+
+
+
 
 
 

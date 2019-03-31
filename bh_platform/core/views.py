@@ -294,8 +294,7 @@ def patch_task(request):
 
 
 
-=======
->>>>>>> 589a64957fbaee307ea6fdac1896d53905cbb5a6
+
 def sign_up(request):
     data = request.body.decode()
     data = json.loads(data)

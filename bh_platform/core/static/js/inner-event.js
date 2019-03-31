@@ -152,7 +152,7 @@ Vue.component('page-innerevent', {
             <v-card light>
               <v-card-title primary-title >
                 <div>
-                  <h3 class=" mb-0" style="font-weight: bold">Поле</h3>
+                  
                 </div>
                 <div v-html="field_of_event" style="overflow: hidden;"></div>
               </v-card-title>

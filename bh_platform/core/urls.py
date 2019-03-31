@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import index_view, sign_up, post_event, sign_in, get_events, get_event, get_tasks_as_manager,get_tasks_as_perfomer
+from .views import index_view, sign_up, post_event, sign_in, get_events, get_event, get_tasks_as_manager,get_tasks_as_perfomer, get_profile
 
 
 urlpatterns = [

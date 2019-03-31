@@ -38,7 +38,7 @@ Vue.component('page-profile',{
                     
                     </v-flex>
 
-                    <v-flex xs-12>
+                    <v-flex xs-12 v-if="profile.is_phys_face">
                       <v-layout row wrap>
                         <v-flex xs12 md6>
                         <h3 v-if="profile.is_phys_face">Физическое лицо</h3>
@@ -147,7 +147,7 @@ Vue.component('page-profile',{
         var data = JSON.stringify({"page": "1"});
         xhr.send(data)
         
-        console.log(response)
+        // console.log(response)
         return response
       }
     },

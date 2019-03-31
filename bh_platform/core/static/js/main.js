@@ -28,12 +28,43 @@ var router = new VueRouter({
 // 4. Создаём и монтируем корневой экземпляр приложения.
 // Убедитесь, что передали экземпляр маршрутизатора в опции
 // `router`, чтобы позволить приложению знать о его наличии.
+
+const store = new Vuex.Store({
+    state: {
+      email: "",
+      is_auth: false,
+      avatar: "https://img.icons8.com/ios/2x/user.png",
+    },
+    mutations: {
+        set_profile: function(state, profile){
+            console.log(profile)
+            state.email = profile.email
+            state.is_auth = (profile !== undefined)
+            state.avatar = profile.avatar
+        }
+    }
+  })
+
+
 const app = new Vue({
     el: "#app",
     router,
+    store,
     data: () => ({
         drawer: false
       }),
+    computed: {
+        user: function (){
+            var profile = load_profile();
+            return profile
+        }
+    },
+    created() {
+        var profile = load_profile();
+        this.$store.commit('set_profile', profile);
+        
+
+    },
     methods: {
         change_location: function(path){
             location.pathname = path
@@ -41,3 +72,5 @@ const app = new Vue({
         
     },
 })
+
+

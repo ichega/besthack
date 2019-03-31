@@ -21,13 +21,37 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-
+@csrf_exempt
+def get_profile(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user)
+        profile = ProfileModel.objects.filter(user=user)[0]
+        data = {
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "otch": profile.otch,
+            "name": profile.name,
+            "phone": profile.phone,
+            "avatar": "/media/" + str(profile.image),
+            "description": profile.description,
+            "site": profile.site,
+            }
+        if profile.is_partner:
+            data["inn"] = profile.inn
+            data["is_phys_face"] = profile.is_phys
+        return JsonResponse(data)
+    else:
+        return JsonResponse({
+            "is_auth": "not ok"
+        })
 
 
 # Create your views here.
 
 
-
+@csrf_exempt
 def get_events(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -42,10 +66,10 @@ def get_events(request):
             event = {}
             e=events[i]
             event["name"] = e.name
-            event["description"] = e.description
+            event["snippet"] = e.snippet
             event["dt_start"] = str(e.dt_start)
             event["dt_finish"] = str(e.dt_finish)
-            event["image"] = str(e.image)
+            event["image"] = "/media/"+str(e.image)
             event["owner"] = str(e.owner)
             response.append(event)
 

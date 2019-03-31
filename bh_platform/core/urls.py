@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index_view, sign_up, post_event, sign_in, get_events
+from .views import index_view, sign_up, post_event, sign_in, get_events, get_profile
 
 urlpatterns = [
     path('', index_view),
@@ -7,6 +7,7 @@ urlpatterns = [
     path('post_event/', post_event),
     path('sign_in/', sign_in),
     path('get_events/', get_events),
+    path('get_profile/', get_profile),
 
 #     # path('index', index_view),
 ]

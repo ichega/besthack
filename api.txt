@@ -1,0 +1,33 @@
+1. Получить список мероприятий
+GET /events
+REQUEST (JSON):
+    {
+        "page": "1",
+    }
+RESPONSE (JSON):
+    {
+        "events" : [
+            {
+                "id": "12345",
+                "name": "Event 1",
+                "description": "...",
+                "datetime_start": "...",
+                "datetime_end": "...",
+                "image": "..."
+
+            },
+            {
+                "id": "12346",
+                "name": "Event 2",
+                "description": "...",
+                "datetime_start": "...",
+                "datetime_end": "...",
+                "image": "..."
+
+            },
+        ]
+    }
+
+2. Получить информацию об одном мероприятии
+3. Получить информацию о профиле
+4. Получить список задач

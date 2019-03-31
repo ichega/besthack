@@ -172,6 +172,7 @@ def post_event(request):
     return JsonResponse({"code":"1"})
 
 
+
 def patch_event(request):
     user = request.user
     print(user)
@@ -198,6 +199,71 @@ def patch_event(request):
         data["image"] = str(event.image)
 
         return JsonResponse(data)
+
+
+
+
+
+
+def post_task(request):
+    user = request.user
+    print(user)
+    data = request.body.decode()
+    data = json.loads(data)
+
+
+    profile = ProfileModel.object.get(username=user)
+
+    id_event = data.event
+    event = EventModel.objects.get(pk=id_event)
+
+    if profile.is_owner:
+
+
+        task = TaskModel(name=data['name'], description=data['description'],
+                         partner=data["partner"], perfomer=data["perfomer"],
+                         event=data['event'],deadline=datetime.datetime.strptime(data["deadline"], '%d.%m.%Y'),
+                         status=data['status']
+                           )
+        task.save
+        data["id"] = task.pk
+        person = task.perfomer
+        person2 = User.objects.get(id=person.user)
+        assign_perm("manage", user, task)
+        assign_perm("manage",person2 , task)
+
+        return JsonResponse(data)
+    return JsonResponse({"code":"1"})
+
+
+
+
+def patch_task(request):
+    user = request.user
+    print(user)
+    data = request.body.decode()
+    data = json.loads(data)
+
+    task = TaskModel.objects.get(data["id"])
+
+    if user.has_perm("manage",task):
+
+
+        task.name=data['name']
+        task.description=data['description']
+        task.partner=data["partner"]
+        task.perfomer=data["perfomer"]
+        task.event=data['event']
+        task.deadline=datetime.datetime.strptime(data["deadline"], '%d.%m.%Y')
+        task.status=data['status']
+
+        task.save
+
+
+        return JsonResponse(data)
+    return JsonResponse({"code":"1"})
+
+
 
 
 

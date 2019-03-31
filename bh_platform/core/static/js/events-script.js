@@ -69,7 +69,29 @@ Vue.component('page-events', {
         "text_event": "Loreing elit, sed do eiusmod temporLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor"
       }
     ],
-  })
+  }),
+  created() {
+    this.events = this.load_events();
+  },
+  methods: {
+    load_events: function (){
+      var self = this;
+      var xhr = new XMLHttpRequest();
+      var url = "url";
+      xhr.open("POST", url, false);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+
+              var json = JSON.parse(xhr.responseText);
+              // console.log(json.email + ", " + json.password);
+          }
+      };
+      var data = JSON.stringify({"page": "1"});
+      var response = xhr.send(data);
+      console.log(response)
+    }
+  },
 });
 
 // new Vue({

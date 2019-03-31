@@ -40,7 +40,7 @@ def get_events(request):
     for i in range(first,first+10,1):
         if i<len(events):
             event = {}
-            e=events[i]
+            e = events[i]
             event["name"] = e.name
             event["description"] = e.description
             event["dt_start"] = str(e.dt_start)
@@ -53,10 +53,50 @@ def get_events(request):
 
 
 
+def get_event(request):
+    data = request.body.decode()
+    data = json.loads(data)
+    event = EventModel.objects.get(pk=data["id"])
+    response = {}
+    response["id"]=event.pk
+    response["name"] = event.name
+    response["description"] = event.description
+    response["dt_start"] = str(event.dt_start)
+    response["dt_finish"] = str(event.dt_finish)
+    response["image"] ="/media/" + str(event.image)
+    response["owner"] = str(event.owner)
+    return JsonResponse(response)
 
+def get_tasks_as_manager(request):
+    data = request.body.decode()
+    data = json.loads(data)
+    task = TaskModel.objects.get(pk=data["id"])
+    response = {}
+    response["perfomer"] = str(task.perfomer)
+    response["name"] = task.name
+    response["description"] = task.description
+    response["partner"] = str(task.partner)
+    response["event"] = str(task.partner)
+    response["deadline"] = str(task.deadline)
+    response["status"] = task.status
+    return JsonResponse(response)
 
-
-
+def get_tasks_as_perfomer(request):
+    perfomer = request.user
+    tasks = TaskModel.objects.filter(perfomer=perfomer.pk)
+    tasks = list(tasks)
+    response = []
+    for task in tasks:
+        t = {}
+        t["perfomer"] = str(task.perfomer)
+        t["name"] = task.name
+        t["description"] = task.description
+        t["partner"] = str(task.partner)
+        t["event"] = str(task.partner)
+        t["deadline"] = str(task.deadline)
+        t["status"] = task.status
+        response.append(t)
+    return JsonResponse({"tasks":response})
 
 
 

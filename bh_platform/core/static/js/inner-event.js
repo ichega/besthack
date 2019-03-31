@@ -1,9 +1,11 @@
 Vue.component('blockorganizer', {
   props: ['img_of_organizer', 'name_of_organizer'],
   template: `
+  {{img_of_organizer}}
   <div>
     <v-avatar size="36px" >
-      <img :src="img_of_organizer" alt="Avatar" >
+      <img :src="img_of_organizer" >
+      
     </v-avatar>
     <span>&nbsp {{ name_of_organizer }}</span>
     </div>
@@ -28,7 +30,7 @@ Vue.component('page-innerevent', {
                 </div>
               </v-flex>
 
-              <v-flex md6 xs12>
+              <v-flex md6 xs12 >
                 <div style="display:flex; justify-content: center; padding: 5px;">
 
                   <template>
@@ -37,8 +39,8 @@ Vue.component('page-innerevent', {
                       <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
 
                         <template v-slot:activator="{ on }">
-                          <v-btn small light style="padding: 0px; text-transform: none;" v-on="on">
-                            <span style="font-weight: bold">Задачи&nbsp</span>
+                          <v-btn flat style="padding: 0px; padding-top:5px; text-transform: none;" v-on="on">
+                            <span style="font-weight: bold;">Задачи&nbsp</span>
                             <v-icon small >fa-tasks</v-icon>
                           </v-btn>
                         </template>
@@ -71,11 +73,12 @@ Vue.component('page-innerevent', {
                       <v-dialog v-model="dialog2" persistent max-width="600px" >
 
                         <template v-slot:activator="{ on }">
-                          <v-btn small light style="padding: 0px; text-transform: none;" v-on="on">
+                          <v-btn flat  style="padding: 0px; text-transform: none;" v-on="on">
                             <span style="font-weight: bold">Изменить&nbsp</span>
-                            <v-icon small >fa-tasks</v-icon>
+                            <v-icon small >fa-pencil-alt</v-icon>
                           </v-btn>
                         </template>
+
                         <v-card light>
                             <v-card-title>
                               <span class="headline">User Profile</span>
@@ -206,7 +209,7 @@ Vue.component('page-innerevent', {
             <v-layout row wrap >
               <v-flex md6 xs12 >
                 <div style="padding: 15px;">
-                  <span  style="font-weight: bold; ">Спонсоры:</span>
+                  <span  style="font-weight: bold; ">Наши партнеры:</span>
                 </div>
               </v-flex>
             </v-layout>
@@ -217,9 +220,10 @@ Vue.component('page-innerevent', {
           <v-card light>
             <a href="#" style="text-decoration: none; color: black; display:flex; justify-content: center; padding: 10px; align-items: center">
               <blockorganizer
-              :img_of_organizer="item.img_of_organizer"
-              :name_of_organizer="item.name_of_organizer"
+              :img_of_organizer="item.avatar"
+              :name_of_organizer="item.name"
               ></blockorganizer>
+              
             </a>
           </v-card>
         </v-flex>
@@ -244,6 +248,10 @@ Vue.component('page-innerevent', {
       this.time_end_of_event = event.dt_finish
       this.time_start_of_event = event.dt_start
       this.name_organizer_of_event = event.owner
+      this.image = event.image
+      this.list_of_organizers = event.partners
+      console.log("KEK")
+      console.log(this.list_of_organizers)
     },
     save_event: function (){
         if (this.$store.state.current_event < 0){
@@ -255,7 +263,7 @@ Vue.component('page-innerevent', {
           "owner": this.name_of_organizer,
           "description": this.field_of_event,
           dt_start: this.time_start_of_event,
-          date_end_of_event: this.time_end_of_event
+          dt_end: this.time_end_of_event
         }
 
         var self = this;
@@ -327,6 +335,7 @@ Vue.component('page-innerevent', {
     date_end_of_event: "06.11.1765",
 
     name_organizer_of_event: "Иван Иванов",
+    image: "",
 
     list_of_organizers: [
       {

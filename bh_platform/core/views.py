@@ -93,6 +93,26 @@ def get_event(request):
     response["dt_finish"] = str(event.dt_finish)[0:16]
     response["image"] ="/media/" + str(event.image)
     response["owner"] = str(event.owner)
+
+    tasks = list(TaskModel.objects.filter(event=event.pk))
+    r = []
+    for task in tasks:
+        if task.partner != None:
+            r.append(task.partner)
+
+    r = [el for el, _ in groupby(r)]
+    # print(r)
+    r1 = []
+    for t in r:
+        q = {
+            "id": User.objects.get(username=t.user).id,
+            "name": t.email,
+            "avatar": "/media/"+str(t.image),
+
+        }
+        r1.append(q)
+    # print(r1)
+    response["partners"] = r1
     return JsonResponse(response)
 
 @csrf_exempt
@@ -183,25 +203,25 @@ def post_event(request):
 def patch_event(request):
     user = request.user
     print(user)
-    profile = ProfileModel.object.get(username=user)
+    profile = ProfileModel.objects.filter(user=user)[0]
     if profile.is_owner:
         data = request.body.decode()
         data = json.loads(data)
-        image = data["image"].split(',')[1]
-        image_64_decode = base64.b64decode(image)
-        media_root = settings.MEDIA_ROOT
-        filename = str(uuid.uuid4()) + str("_") + str(data["image_name"])
-        path = os.path.join(media_root, filename)
-        print(path)
-        file = open(path, 'wb')
-        file.write(image_64_decode)
+        # image = data["image"].split(',')[1]
+        # image_64_decode = base64.b64decode(image)
+        # media_root = settings.MEDIA_ROOT
+        # filename = str(uuid.uuid4()) + str("_") + str(data["image_name"])
+        # path = os.path.join(media_root, filename)
+        # print(path)
+        # file = open(path, 'wb')
+        # file.write(image_64_decode)
         event = EventModel.objects.get(id=data["id"])
         event.name=data['name']
         event.description=data['description']
-        event.dt_start=datetime.datetime.strptime(data["datetime_start"], '%d.%m.%Y')
-        event.dt_finish=datetime.datetime.strptime(data["datetime_finish"], '%d.%m.%Y')
-        event.image=str(filename)
-        event.save
+        event.dt_start=datetime.strptime(data["dt_start"], '%Y-%m-%d %H:%M')
+        event.dt_finish=datetime.strptime(data["dt_end"], '%Y-%m-%d %H:%M')
+        # event.image=str(filename)
+        event.save()
         data["id"] = event.pk
         data["image"] = str(event.image)
 

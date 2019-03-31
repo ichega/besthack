@@ -4,9 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 import json
 from datetime import datetime
-
 from guardian.shortcuts import assign_perm
-
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .models import *
@@ -38,6 +36,9 @@ def get_profile(request):
             "avatar": "/media/" + str(profile.image),
             "description": profile.description,
             "site": profile.site,
+            "is_volon": profile.is_volon,
+            "is_staff": profile.is_staff,
+            "is_partner": profile.is_partner,
             }
         if profile.is_partner:
             data["inn"] = profile.inn
@@ -66,6 +67,7 @@ def get_events(request):
         if i<len(events):
             event = {}
             e = events[i]
+            event["id"] = e.pk
             event["name"] = e.name
             event["snippet"] = e.snippet
             event["dt_start"] = str(e.dt_start)[0:16]
@@ -77,10 +79,11 @@ def get_events(request):
     return JsonResponse({"events":response})
 
 
-
+@csrf_exempt
 def get_event(request):
     data = request.body.decode()
     data = json.loads(data)
+    print(data)
     event = EventModel.objects.get(pk=data["id"])
     response = {}
     response["id"]=event.pk
@@ -92,6 +95,7 @@ def get_event(request):
     response["owner"] = str(event.owner)
     return JsonResponse(response)
 
+@csrf_exempt
 def get_tasks_as_manager(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -106,6 +110,7 @@ def get_tasks_as_manager(request):
     response["status"] = task.status
     return JsonResponse(response)
 
+@csrf_exempt
 def get_tasks_as_perfomer(request):
     perfomer = request.user
     tasks = TaskModel.objects.filter(perfomer=perfomer.pk)
@@ -124,7 +129,7 @@ def get_tasks_as_perfomer(request):
     return JsonResponse({"tasks":response})
 
 
-
+@csrf_exempt
 def get_partners(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -172,6 +177,8 @@ def post_event(request):
     return JsonResponse({"code":"1"})
 
 
+
+@csrf_exempt
 
 def patch_event(request):
     user = request.user
@@ -267,6 +274,8 @@ def patch_task(request):
 
 
 
+=======
+>>>>>>> 589a64957fbaee307ea6fdac1896d53905cbb5a6
 def sign_up(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -336,7 +345,7 @@ def sign_up(request):
             return JsonResponse(data)
 
 
-
+@csrf_exempt
 def sign_in(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -357,7 +366,7 @@ def sign_in(request):
 
 
 
-
+@csrf_exempt
 def index_view(request):
     print("Hello")
     context = {

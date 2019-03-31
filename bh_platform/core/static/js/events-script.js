@@ -1,13 +1,15 @@
 Vue.component('event', {
-  props: ['img_event', 'date_event', 'name_event', 'text_event'],
+  props: ["id",'img_event', 'date_event', 'name_event', 'text_event'],
   template: `
       <v-card height="400px" style="overflow: hidden;">
         <v-img :src="img_event" aspect-ratio="2.75" height=200px></v-img>
 
         <v-card-title primary-title>
           <div>
+          
             <h4 style="font-weight: normal"><v-icon small>fa-calendar-alt</v-icon>&nbsp{{date_event}}</h4>
             <h3 class="headline mb-0">{{name_event}}</h3>
+            
             <div v-html="text_event"></div>
           </div>
         </v-card-title>
@@ -32,8 +34,9 @@ Vue.component('page-events', {
               <v-layout row wrap>
 
                 <v-flex md4 xs12 v-for="item in events">
-                  <a style="text-decoration: none" @click="$router.push('/event')">
+                  <a style="text-decoration: none" @click="$router.push('/event'); $store.commit('set_current_event', item.id);">
                    <event
+                    :id="item.id"
                     :img_event="item.image"
                     :date_event="item.dt_start"
                     :name_event="item.name"
@@ -41,6 +44,7 @@ Vue.component('page-events', {
                     
                   ></event> 
                   <!--<event
+                    
                     :img_event="item.img_event"
                     :date_event="item.date_event"
                     :name_event="item.name_event"
@@ -101,7 +105,7 @@ Vue.component('page-events', {
       var data = JSON.stringify({"page": "1"});
       xhr.send(data)
       
-      console.log(response)
+      // console.log(response)
       return response.events
     }
   },

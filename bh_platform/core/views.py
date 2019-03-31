@@ -65,6 +65,7 @@ def get_events(request):
         if i<len(events):
             event = {}
             e = events[i]
+            event["id"] = e.pk
             event["name"] = e.name
             event["snippet"] = e.snippet
             event["dt_start"] = str(e.dt_start)
@@ -76,10 +77,11 @@ def get_events(request):
     return JsonResponse({"events":response})
 
 
-
+@csrf_exempt
 def get_event(request):
     data = request.body.decode()
     data = json.loads(data)
+    print(data)
     event = EventModel.objects.get(pk=data["id"])
     response = {}
     response["id"]=event.pk

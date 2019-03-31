@@ -14,12 +14,12 @@ Vue.component('blockorganizer', {
 Vue.component('page-innerevent', {
   template: `
   <v-container grid-list-md  >
-    <v-layout row wrap justify-center>
+    <v-layout row wrap justify-center fluid>
       <v-flex md8 xs12>
-        <v-layout row wrap justify-center>
+        <v-layout row wrap justify-center style="overflow=hidden;">
           <v-flex md11 xs12 >
             <v-card dark style="background-color:rgba(255,0,0,0.7)">
-              <v-layout row wrap justify-center>
+              <v-layout row wrap justify-center style="overflow: hidden;">
 
               <v-flex md6 xs12 >
                 <div style="display:flex; justify-content: center; padding: 15px;">
@@ -32,25 +32,21 @@ Vue.component('page-innerevent', {
                 <div style="display:flex; justify-content: center; padding: 5px;">
 
                   <template>
-                 
+
                     <v-layout row justify-center>
                       <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-                      
+
                         <template v-slot:activator="{ on }">
                           <v-btn small light style="padding: 0px; text-transform: none;" v-on="on">
-
-
-                            <span style="font-weight: bold">Задачи:&nbsp</span>
+                            <span style="font-weight: bold">Задачи&nbsp</span>
                             <v-icon small >fa-tasks</v-icon>
                           </v-btn>
                         </template>
-                        
-                        
-                          
+
                           <v-toolbar dark style="background-color:#ff5555ff">
-                            
+
                             <v-toolbar-title ><v-icon>fa fa-tasks</v-icon> Доска задач</v-toolbar-title>
-                            
+
                             <v-spacer></v-spacer>
                             <v-toolbar-items>
                               <v-btn icon dark @click="dialog = false">
@@ -58,16 +54,88 @@ Vue.component('page-innerevent', {
                               </v-btn>
                             </v-toolbar-items>
                           </v-toolbar>
-                          
-                       
+
+
                           <canban></canban>
-                        
-                        
-                       
+
+
+
                       </v-dialog>
-                      
+
                     </v-layout>
-                    
+                  </template>
+
+                  <template>
+
+                    <v-layout row justify-center>
+                      <v-dialog v-model="dialog2" persistent max-width="600px" >
+
+                        <template v-slot:activator="{ on }">
+                          <v-btn small light style="padding: 0px; text-transform: none;" v-on="on">
+                            <span style="font-weight: bold">Изменить&nbsp</span>
+                            <v-icon small >fa-tasks</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card light>
+                            <v-card-title>
+                              <span class="headline">User Profile</span>
+                            </v-card-title>
+                            <v-card-text class="pt-0 pb-0" >
+                              <v-container grid-list-md>
+                                <v-layout wrap>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Наименование мероприятия" v-model="name_of_event" ></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Организатор" v-model="name_organizer_of_event" ></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm12>
+                                    <span style="font-weight:bold">Начало</span>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Время" v-model="time_start_of_event" ></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Дата" v-model="date_start_of_event" ></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm12>
+                                    <span style="font-weight:bold">Конец</span>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Время" v-model="time_end_of_event"></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12 sm6>
+                                    <v-text-field label="Дата" v-model="date_end_of_event"></v-text-field>
+                                  </v-flex>
+
+                                  <v-flex xs12>
+                                    <v-textarea
+                                        label="Поле"
+                                        v-model="field_of_event"
+                                    ></v-textarea>
+                                  </v-flex>
+
+                                </v-layout>
+                              </v-container>
+                            </v-card-text>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="blue  darken-1" flat @click="dialog2 = false">Закрыть</v-btn>
+                              <v-btn color="red darken-1" flat @click="dialog2 = false">Сохранить</v-btn>
+                            </v-card-actions>
+
+                        </v-card>
+                      </v-dialog>
+
+                    </v-layout>
                   </template>
 
                 </div>
@@ -77,13 +145,13 @@ Vue.component('page-innerevent', {
             </v-card>
           </v-flex>
 
-          <v-flex md11>
+          <v-flex md11 >
             <v-card light>
-              <v-card-title primary-title>
+              <v-card-title primary-title >
                 <div>
                   <h3 class=" mb-0" style="font-weight: bold">Поле</h3>
                 </div>
-                {{field_of_event}}
+                <div v-html="field_of_event" style="overflow: hidden;"></div>
               </v-card-title>
             </v-card>
           </v-flex>
@@ -162,9 +230,55 @@ Vue.component('page-innerevent', {
             </v-layout>
           </v-container>
   `,
+  created() {
+    this.update()
+  },
+  methods: {
+    update: function (){
+      if (this.$store.state.current_event < 0){
+        this.$router.push('/events');
+      }
+      var event = this.load_event(this.$store.state.current_event)
+      // alert(event)
+      console.log(event);
+      this.name_of_event = event.name
+      this.field_of_event = event.description
+      this.time_end_of_event = event.dt_finish
+      this.time_start_of_event = event.dt_start
+      this.name_organizer_of_event = event.owner
+    },
+    save_event: function (){
+
+      
+    }
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ДОРАБОТАТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    load_event: function (event_id){
+      var self = this;
+      var xhr = new XMLHttpRequest();
+      var url = "/get_event/";
+      xhr.open("POST", url, false);
+      var response = "123"
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+
+              response = JSON.parse(xhr.responseText);
+              // console.log(xhr.responseText)
+              // console.log(json.email + ", " + json.password);
+          }
+      };
+      // alert(event_id)
+      var data = JSON.stringify({"id": event_id});
+      xhr.send(data)
+      
+      // console.log(response)
+      return response
+    }
+  },
 
   data: () => ({
     dialog: false,
+    dialog2: false,
     notifications: false,
     sound: true,
     widgets: false,

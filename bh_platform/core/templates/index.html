@@ -20,7 +20,7 @@
     <v-app id="inspire">
         <v-navigation-drawer right clipped v-model="drawer" app>
             <v-list dense>
-                <v-list-tile @click="$router.push('/home')">
+                <v-list-tile @click="$router.push('/home'); drawer = false;">
                     <v-list-tile-action>
                         <v-icon>fa-home</v-icon>
                     </v-list-tile-action>
@@ -31,18 +31,8 @@
                         </v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile @click="$router.push('/canban')">
-                    <v-list-tile-action>
-                        <v-icon>dashboard</v-icon>
-                    </v-list-tile-action>
-                    <v-list-tile-content>
-                        <v-list-tile-title>
-                            Canban
-
-                        </v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                <v-list-tile @click="$router.push('/events')">
+                
+                <v-list-tile @click="$router.push('/events'); drawer = false;">
                     <v-list-tile-action>
                         <v-icon>settings</v-icon>
                     </v-list-tile-action>
@@ -52,7 +42,7 @@
                         </v-list-tile-title>
                     </v-list-tile-content>
                 </v-list-tile>
-                <v-list-tile @click="$router.push('/profile')">
+                <v-list-tile @click="$router.push('/profile'); drawer = false;">
                     <v-list-tile-action>
                         <v-icon>fa-user-circle</v-icon>
                     </v-list-tile-action>

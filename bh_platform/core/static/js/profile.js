@@ -129,6 +129,9 @@ Vue.component('page-profile',{
       this.profile = this.load_profile();
     },
     methods: {
+      update: function (){
+
+      },
       load_profile: function (){
         var self = this;
         var xhr = new XMLHttpRequest();

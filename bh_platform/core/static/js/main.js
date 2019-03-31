@@ -34,6 +34,7 @@ const store = new Vuex.Store({
       email: "",
       is_auth: false,
       avatar: "https://img.icons8.com/ios/2x/user.png",
+      current_event: -1,
     },
     mutations: {
         set_profile: function(state, profile){
@@ -41,7 +42,13 @@ const store = new Vuex.Store({
             state.email = profile.email
             state.is_auth = (profile !== undefined)
             state.avatar = profile.avatar
-        }
+        },
+        set_current_event: function(state, id){
+            if (id > 0){
+                state.current_event = id
+                // alert(id)
+            }
+        },
     }
   })
 

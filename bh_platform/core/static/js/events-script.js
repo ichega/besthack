@@ -74,6 +74,7 @@ Vue.component('page-events', {
     this.events = this.load_events();
   },
   methods: {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ДОРАБОТАТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     load_events: function (){
       var self = this;
       var xhr = new XMLHttpRequest();

@@ -72,6 +72,21 @@ Vue.component('page-profile',{
                     
                     </v-flex>
 
+                    
+                    
+                    <v-flex xs-12>
+                      <v-layout row wrap>
+                        <v-flex xs12 md6>
+                        <div v-if="profile.is_phys_face"><v-chip>Физ. лицо / партнер</v-chip></div>
+                        <div v-else-if="profile.is_partner "><v-chip>Юр. лицо / партнер</v-chip></div>
+                        <div v-else-if="profile.is_volon"><v-chip>Волонтер</v-chip></div>
+                        <div v-else-if="profile.is_staff"><v-chip>Сотрудник</v-chip></div>
+                        
+                        </v-flex>
+                      </v-layout>
+                    
+                    </v-flex>
+
                     <v-flex xs-12>
                       <v-layout row wrap>
                         <v-flex xs12 md6>
@@ -129,9 +144,7 @@ Vue.component('page-profile',{
       this.profile = this.load_profile();
     },
     methods: {
-      update: function (){
-
-      },
+     
       load_profile: function (){
         var self = this;
         var xhr = new XMLHttpRequest();

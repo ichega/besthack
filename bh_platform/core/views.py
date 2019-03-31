@@ -38,6 +38,9 @@ def get_profile(request):
             "avatar": "/media/" + str(profile.image),
             "description": profile.description,
             "site": profile.site,
+            "is_volon": profile.is_volon,
+            "is_staff": profile.is_staff,
+            "is_partner": profile.is_partner,
             }
         if profile.is_partner:
             data["inn"] = profile.inn
@@ -94,6 +97,7 @@ def get_event(request):
     response["owner"] = str(event.owner)
     return JsonResponse(response)
 
+@csrf_exempt
 def get_tasks_as_manager(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -108,6 +112,7 @@ def get_tasks_as_manager(request):
     response["status"] = task.status
     return JsonResponse(response)
 
+@csrf_exempt
 def get_tasks_as_perfomer(request):
     perfomer = request.user
     tasks = TaskModel.objects.filter(perfomer=perfomer.pk)
@@ -126,7 +131,7 @@ def get_tasks_as_perfomer(request):
     return JsonResponse({"tasks":response})
 
 
-
+@csrf_exempt
 def get_partners(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -168,7 +173,7 @@ def post_event(request):
     return JsonResponse({"code":"1"})
 
 
-
+@csrf_exempt
 def sign_up(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -238,7 +243,7 @@ def sign_up(request):
             return JsonResponse(data)
 
 
-
+@csrf_exempt
 def sign_in(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -258,7 +263,7 @@ def sign_in(request):
 
 
 
-
+@csrf_exempt
 def index_view(request):
     print("Hello")
     context = {

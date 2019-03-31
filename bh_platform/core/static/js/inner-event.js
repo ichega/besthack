@@ -129,7 +129,7 @@ Vue.component('page-innerevent', {
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn color="blue  darken-1" flat @click="dialog2 = false">Закрыть</v-btn>
-                              <v-btn color="red darken-1" flat @click="dialog2 = false">Сохранить</v-btn>
+                              <v-btn color="red darken-1" flat @click="dialog2 = false; save_event();">Сохранить</v-btn>
                             </v-card-actions>
 
                         </v-card>
@@ -230,9 +230,7 @@ Vue.component('page-innerevent', {
             </v-layout>
           </v-container>
   `,
-  created() {
-    this.update()
-  },
+  
   methods: {
     update: function (){
       if (this.$store.state.current_event < 0){
@@ -248,9 +246,43 @@ Vue.component('page-innerevent', {
       this.name_organizer_of_event = event.owner
     },
     save_event: function (){
+        if (this.$store.state.current_event < 0){
+          this.$router.push('/events');
+        }
+        var data = {
+          id: this.$store.state.current_event,
+          "name": this.name_of_event,
+          "owner": this.name_of_organizer,
+          "description": this.field_of_event,
+          dt_start: this.time_start_of_event,
+          date_end_of_event: this.time_end_of_event
+        }
 
-      
-    }
+        var self = this;
+        var xhr = new XMLHttpRequest();
+        var url = "/patch_event/";
+        xhr.open("PATCH", url, false);
+        var response = "123"
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+
+                response = JSON.parse(xhr.responseText);
+                // console.log(xhr.responseText)
+                // console.log(json.email + ", " + json.password);
+            }
+        };
+        // alert(event_id)
+        var data = JSON.stringify(data);
+        alert('SEND XHR(it realy no)')
+        console.log(data)
+        xhr.send(data)
+        
+        // console.log(response)
+        return response
+      },
+
+    
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ДОРАБОТАТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     load_event: function (event_id){
       var self = this;
@@ -273,9 +305,11 @@ Vue.component('page-innerevent', {
       
       // console.log(response)
       return response
-    }
+    },
   },
-
+  created() {
+    this.update();
+  },
   data: () => ({
     dialog: false,
     dialog2: false,

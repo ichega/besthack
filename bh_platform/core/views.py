@@ -72,8 +72,8 @@ def get_events(request):
             event["id"] = e.pk
             event["name"] = e.name
             event["snippet"] = e.snippet
-            event["dt_start"] = str(e.dt_start)
-            event["dt_finish"] = str(e.dt_finish)
+            event["dt_start"] = str(e.dt_start)[0:16]
+            event["dt_finish"] = str(e.dt_finish)[0:16]
             event["image"] = "/media/"+str(e.image)
             event["owner"] = str(e.owner)
             response.append(event)
@@ -91,8 +91,8 @@ def get_event(request):
     response["id"]=event.pk
     response["name"] = event.name
     response["description"] = event.description
-    response["dt_start"] = str(event.dt_start)
-    response["dt_finish"] = str(event.dt_finish)
+    response["dt_start"] = str(event.dt_start)[0:16]
+    response["dt_finish"] = str(event.dt_finish)[0:16]
     response["image"] ="/media/" + str(event.image)
     response["owner"] = str(event.owner)
     return JsonResponse(response)
@@ -108,7 +108,7 @@ def get_tasks_as_manager(request):
     response["description"] = task.description
     response["partner"] = str(task.partner)
     response["event"] = str(task.partner)
-    response["deadline"] = str(task.deadline)
+    response["deadline"] = str(task.deadline)[0:16]
     response["status"] = task.status
     return JsonResponse(response)
 
@@ -125,7 +125,7 @@ def get_tasks_as_perfomer(request):
         t["description"] = task.description
         t["partner"] = str(task.partner)
         t["event"] = str(task.partner)
-        t["deadline"] = str(task.deadline)
+        t["deadline"] = str(task.deadline)[0:16]
         t["status"] = task.status
         response.append(t)
     return JsonResponse({"tasks":response})
@@ -140,6 +140,9 @@ def get_partners(request):
     for task in tasks:
         if task.partner != None:
             response.append(task.partner)
+
+    response = [el for el, _ in groupby(response)]
+
     return JsonResponse({"partners":response})
 
 
@@ -165,15 +168,50 @@ def post_event(request):
         file.write(image_64_decode)
         event = EventModel(name=data['name'], description=data['description'],
                            dt_start=datetime.datetime.strptime(data["datetime_start"], '%d.%m.%Y') ,
+                           dt_finish=datetime.datetime.strptime(data["datetime_finish"], '%d.%m.%Y'),
                            image=str(filename))
         event.save
         data["id"] = event.pk
         data["image"] = str(event.image)
+        assign_perm("manage", user, event)
+
         return JsonResponse(data)
     return JsonResponse({"code":"1"})
 
 
+
 @csrf_exempt
+
+def patch_event(request):
+    user = request.user
+    print(user)
+    profile = ProfileModel.object.get(username=user)
+    if profile.is_owner:
+        data = request.body.decode()
+        data = json.loads(data)
+        image = data["image"].split(',')[1]
+        image_64_decode = base64.b64decode(image)
+        media_root = settings.MEDIA_ROOT
+        filename = str(uuid.uuid4()) + str("_") + str(data["image_name"])
+        path = os.path.join(media_root, filename)
+        print(path)
+        file = open(path, 'wb')
+        file.write(image_64_decode)
+        event = EventModel.objects.get(id=data["id"])
+        event.name=data['name']
+        event.description=data['description']
+        event.dt_start=datetime.datetime.strptime(data["datetime_start"], '%d.%m.%Y')
+        event.dt_finish=datetime.datetime.strptime(data["datetime_finish"], '%d.%m.%Y')
+        event.image=str(filename)
+        event.save
+        data["id"] = event.pk
+        data["image"] = str(event.image)
+
+        return JsonResponse(data)
+
+
+
+
 def sign_up(request):
     data = request.body.decode()
     data = json.loads(data)
@@ -258,6 +296,7 @@ def sign_in(request):
         return JsonResponse({
             "answer": "ERROR",
         })
+
 
 
 
